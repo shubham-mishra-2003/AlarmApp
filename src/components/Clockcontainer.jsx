@@ -74,51 +74,36 @@ const Clockcontainer = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(
+    () => {
+      const interval = setInterval(() => {
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        const currentMinute = currentTime.getMinutes();
+        const currentSecond = currentTime.getSeconds();
+        const currentAmPm = currentHour >= 12 ? "PM" : "AM";
 
-  useEffect(() => {
-  const interval = setInterval(() => {
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    const currentMinute = currentTime.getMinutes();
-    const currentSecond = currentTime.getSeconds();
-    const currentAmPm = currentHour >= 12 ? "PM" : "AM";
+        const alarmTimeString = alarmTime.split(":");
+        const alarmHour = parseInt(alarmTimeString[0]);
+        const alarmMinute = parseInt(alarmTimeString[1].split(" ")[0]);
+        const alarmAmPm = alarmTimeString[1].split(" ")[1];
 
-    // Convert alarm time string to Date object
-    const alarmTimeString = alarmTime.split(":");
-    const alarmHour = parseInt(alarmTimeString[0]);
-    const alarmMinute = parseInt(alarmTimeString[1].split(" ")[0]);
-    const alarmAmPm = alarmTimeString[1].split(" ")[1];
-
-    console.log("Current Time:", currentTime.toLocaleTimeString());
-    console.log("Alarm Time:", alarmTime);
-
-    if (
-      currentHour === alarmHour &&
-      currentMinute === alarmMinute &&
-      currentAmPm === alarmAmPm &&
-      currentSecond === 0 // Trigger alarm only when seconds are 0
-    ) {
-      console.log("Alarm ringing...");
-      try {
-        if (ringtone.paused) {
-          ringtone.play().then(() => {
-            console.log("Ringtone started playing.");
-          }).catch(error => {
-            console.error("Error playing ringtone:", error);
-          });
-        } else {
-          console.warn("Ringtone is already playing.");
+        if (
+          currentHour === alarmHour &&
+          currentMinute === alarmMinute &&
+          currentAmPm === alarmAmPm &&
+          currentSecond === 0
+        ) {
+          ringtone.play();
+          ringtone.loop = true;
+          toast.success("playing ringtone");
         }
-      } catch (error) {
-        console.error("Error playing ringtone:", error);
-      }
-    }
-  }, 1000);
+      }, 1000);
 
-  return () => clearInterval(interval);
-}, [alarmTime]);
-
-  
+      return () => clearInterval(interval);
+    },
+    [alarmTime]
+  );
 
   return (
     <div className="flex fixed md:static md:w-[65vw] w-full justify-center items-center p-9 flex-col bg-gray-900 rounded-lg bg-clip-padding backdrop-filter mt-20 backdrop-blur-sm bg-opacity-30 border border-gray-100 mb-2">
