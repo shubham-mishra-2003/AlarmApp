@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html,
+#root,
+body {
+  min-height: 100vh;
+  background-image: linear-gradient(
+    to right top,
+    #0066ff,
+    #5659f8,
+    #7a49ee,
+    #9633e1,
+    #ad00d2
+  );
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
